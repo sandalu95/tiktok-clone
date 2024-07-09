@@ -38,7 +38,6 @@
 
         <div v-if="false" class="flex items-center">
           <button
-            @click="$generalStore.isLoginOpen = true"
             class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]"
           >
             <span class="mx-4 font-medium text-[15px]">Log in</span>
