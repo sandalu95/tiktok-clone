@@ -33,11 +33,7 @@
 
             <div class="flex items-center justify-center sm:-mt-6">
               <label for="image" class="relative cursor-pointer">
-                <img
-                  class="rounded-full"
-                  width="95"
-                  src="https://picsum.photos/id/237/300/320"
-                />
+                <img class="rounded-full" width="95" :src="userImage" />
                 <div
                   class="absolute bottom-0 right-0 rounded-full bg-white shadow-xl border p-1 border-gray-300 inline-block w-[32px]"
                 >
@@ -195,6 +191,47 @@ let isUpdated = ref(false);
 const getUploadedImage = (e) => {
   file.value = e.target.files[0];
   uploadedImage.value = URL.createObjectURL(file.value);
+};
+const cropAndUpdateImage = async () => {
+  const { coordinates } = cropper.value.getResult();
+  let data = new FormData();
+
+  data.append("image", file.value || "");
+  data.append("height", coordinates.height || "");
+  data.append("width", coordinates.width || "");
+  data.append("left", coordinates.left || "");
+  data.append("top", coordinates.top || "");
+
+  try {
+    await $userStore.updateUserImage(data);
+    await $userStore.getUser();
+    await $profileStore.getProfile(route.params.id);
+
+    $generalStore.updateSideMenuImage($generalStore.suggested, $userStore);
+    $generalStore.updateSideMenuImage($generalStore.following, $userStore);
+
+    userImage.value = image.value;
+    uploadedImage.value = null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateUserInfo = async () => {
+  try {
+    await $userStore.updateUser(userName.value, userBio.value);
+    await $userStore.getUser();
+    await $profileStore.getProfile(route.params.id);
+
+    userName.value = name.value;
+    userBio.value = bio.value;
+
+    setTimeout(() => {
+      $generalStore.isEditProfileOpen = false;
+    }, 100);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 watch(

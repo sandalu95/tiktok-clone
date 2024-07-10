@@ -30,6 +30,7 @@
         class="flex items-center justify-end gap-3 min-w-[275px] max-w-[320px] w-full"
       >
         <button
+          @click="isLoggedIn()"
           class="flex items-center border rounded-sm px-3 py-[6px] hover:bg-gray-100"
         >
           <Icon name="mdi:plus" color="#000000" size="22" />
@@ -69,13 +70,15 @@
               class="absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2"
             >
               <NuxtLink
-                @click="($event) => (showMenu = false)"
+                :to="`/profile/${$userStore.id}`"
+                @click="showMenu = false"
                 class="flex items-center justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer"
               >
                 <Icon name="ph:user" size="20" />
                 <span class="pl-2 font-semibold text-sm">Profile</span>
               </NuxtLink>
               <div
+                @click="logout()"
                 class="flex items-center justify-start py-3 px-1.5 hover:bg-gray-100 border-t cursor-pointer"
               >
                 <Icon name="ic:outline-login" size="20" />
@@ -105,4 +108,21 @@ onMounted(() => {
     }
   });
 });
+
+const isLoggedIn = () => {
+  if ($userStore.id) {
+    router.push("/upload");
+  } else {
+    $generalStore.isLoginOpen = true;
+  }
+};
+
+const logout = () => {
+  try {
+    $userStore.logout();
+    router.push("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
