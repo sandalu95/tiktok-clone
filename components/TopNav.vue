@@ -36,8 +36,9 @@
           <span class="px-2 font-medium text-[15px]">Upload</span>
         </button>
 
-        <div v-if="false" class="flex items-center">
+        <div v-if="!$userStore.id" class="flex items-center">
           <button
+            @click="$generalStore.isLoginOpen = true"
             class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]"
           >
             <span class="mx-4 font-medium text-[15px]">Log in</span>
@@ -59,11 +60,7 @@
           />
           <div class="relative">
             <button class="mt-1" @click="showMenu = !showMenu">
-              <img
-                class="rounded-full"
-                width="33"
-                src="https://picsum.photos/id/237/200/200"
-              />
+              <img class="rounded-full" width="33" :src="$userStore.image" />
             </button>
 
             <div
@@ -93,6 +90,8 @@
 </template>
 
 <script setup>
+const { $userStore, $generalStore } = useNuxtApp();
+
 const route = useRoute();
 const router = useRouter();
 
