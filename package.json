@@ -14,7 +14,8 @@
     "axios": "^1.7.2",
     "nuxt": "^3.12.3",
     "pinia": "^2.1.7",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-advanced-cropper": "^2.8.9"
   },
   "devDependencies": {
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
